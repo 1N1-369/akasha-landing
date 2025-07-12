@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo Dashboard Akasha</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: { main: '#5B5CEF', dark: '#4748D1', light: '#D7D8FB' },
+                        secondary: { cyan: '#6AD9C1', lightCyan: '#C9F2E9' },
+                        background: { default: '#F9FAFC', surface: '#FFFFFF' },
+                        text: { primary: '#1A202C', secondary: '#718096', disabled: '#A0AEC0', onPrimary: '#FFFFFF' },
+                        border: { default: '#E2E8F0' }
+                    },
+                    fontFamily: { 'inter': ['Inter', 'sans-serif'] },
+                    borderRadius: { 'xl': '20px', 'full': '9999px' },
+                    boxShadow: { 'card': '0px 5px 15px 0px rgba(26, 32, 44, 0.06)', 'card-hover': '0px 10px 25px 0px rgba(26, 32, 44, 0.08)' }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #F9FAFC; color: #1A202C; }
+        .card { background-color: #FFFFFF; border-radius: 20px; padding: 24px; box-shadow: 0px 5px 15px 0px rgba(26, 32, 44, 0.06); transition: transform 0.3s, box-shadow 0.3s; border: 1px solid #E2E8F0; }
+        .card:hover { transform: translateY(-5px); box-shadow: 0px 10px 25px 0px rgba(26, 32, 44, 0.08); }
+        .progress-bar { height: 10px; border-radius: 9999px; background: #D7D8FB; overflow: hidden; }
+        .progress-fill { height: 100%; border-radius: 9999px; background: linear-gradient(90deg, #5B5CEF, #6AD9C1); transition: width 1s cubic-bezier(.4,0,.2,1); }
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.7s cubic-bezier(.4,0,.2,1), transform 0.7s cubic-bezier(.4,0,.2,1);
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        body.dark { background-color: #1A202C; color: #F9FAFC; }
+        body.dark .card { background-color: #23263a; color: #F9FAFC; border-color: #2D3748; }
+        body.dark .tab-btn, body.dark .btn-secondary { background-color: #23263a; color: #F9FAFC; }
+        body.dark .btn-primary { background-color: #5B5CEF; color: #fff; }
+        body.dark .progress-bar { background: #35377a; }
+        body.dark .progress-fill { background: linear-gradient(90deg, #6AD9C1, #5B5CEF); }
+        @keyframes check {
+            0% { background-color: #5B5CEF; color: #fff; }
+            50% { background-color: #4ADE80; color: #fff; }
+            100% { background-color: #E2E8F0; color: #4ADE80; }
+        }
+        .animate-check {
+            animation: check 0.7s cubic-bezier(.4,0,.2,1);
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen">
+    <div id="loader" class="fixed inset-0 flex items-center justify-center bg-white z-50">
+        <div class="w-12 h-12 border-4 border-primary-main border-t-transparent rounded-full animate-spin"></div>
+    </div>
+    <!-- Header -->
+    <header class="bg-white/80 backdrop-blur-sm border-b border-gray-200 py-4 px-6 flex items-center justify-between">
+        <div class="flex items-center space-x-2">
+            <span class="text-2xl font-bold text-gray-800">Akasha</span>
+            <span class="text-xs font-semibold text-gray-500">by 1N1</span>
+            <span class="ml-4 flex items-center gap-1 text-green-600 text-xs font-semibold"><span class="w-2 h-2 bg-green-500 rounded-full inline-block"></span>En línea</span>
+        </div>
+        <nav class="flex items-center gap-4">
+            <a href="index.html" class="text-primary-main hover:underline font-medium">Volver al Landing</a>
+            <button id="theme-toggle" class="ml-4 px-3 py-1 rounded-full bg-primary-light text-primary-main font-semibold" title="Cambiar tema claro/oscuro">🌙</button>
+            <button id="presentation-toggle" class="ml-4 px-3 py-1 rounded-full bg-primary-light text-primary-main font-semibold" title="Modo presentación">🖥️</button>
+            <div class="relative ml-4">
+                <button id="avatar-btn" class="w-10 h-10 rounded-full bg-primary-light flex items-center justify-center focus:outline-none" title="Menú de usuario">
+                    <span class="text-lg font-bold text-primary-main">B</span>
+                </button>
+                <div id="avatar-menu" class="hidden absolute right-0 mt-2 w-40 bg-white dark:bg-gray-800 rounded-xl shadow-lg py-2 z-50">
+                    <a href="#" class="block px-4 py-2 text-gray-700 dark:text-gray-100 hover:bg-primary-light">Perfil</a>
+                    <a href="#" class="block px-4 py-2 text-gray-700 dark:text-gray-100 hover:bg-primary-light">Cerrar sesión</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <!-- Botón flotante para salir de modo presentación -->
+    <button id="exit-presentation" aria-label="Salir de modo presentación" title="Salir de modo presentación"
+        class="hidden fixed top-6 right-6 z-50 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 shadow-lg rounded-full w-12 h-12 flex items-center justify-center text-2xl font-bold text-red-500 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-red-400 transition"
+        tabindex="0">❌</button>
+    <!-- Main Dashboard -->
+    <main class="max-w-5xl mx-auto py-12 px-4">
+        <div class="mb-8 text-center">
+            <h1 class="text-3xl md:text-4xl font-extrabold mb-2">¡Hola, Brenda!</h1>
+            <div class="flex flex-wrap justify-center gap-2 mb-2">
+                <span class="inline-flex items-center px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-semibold" title="Completaste 3 cursos">🏅 3 Cursos Completados</span>
+                <span class="inline-flex items-center px-3 py-1 bg-primary-light text-primary-main rounded-full text-xs font-semibold" title="Has entregado todas tus tareas esta semana">✨ Tareas al día</span>
+                <span class="inline-flex items-center px-3 py-1 bg-yellow-100 text-yellow-700 rounded-full text-xs font-semibold" title="Estudiaste 10+ horas esta semana">⏰ 10+ horas de estudio</span>
+            </div>
+        </div>
+        <div class="flex justify-center mb-8" role="tablist">
+            <button class="tab-btn px-6 py-2 font-semibold rounded-full mx-2 bg-primary-light text-primary-main" data-tab="cursos" title="Ver cursos" role="tab" tabindex="0" aria-selected="true">Cursos</button>
+            <button class="tab-btn px-6 py-2 font-semibold rounded-full mx-2 bg-secondary-lightCyan text-secondary-cyan" data-tab="progreso" title="Ver progreso" role="tab" tabindex="0" aria-selected="false">Progreso</button>
+            <button class="tab-btn px-6 py-2 font-semibold rounded-full mx-2 bg-primary-light text-primary-main" data-tab="calendario" title="Ver calendario" role="tab" tabindex="0" aria-selected="false">Calendario</button>
+            <button class="tab-btn px-6 py-2 font-semibold rounded-full mx-2 bg-secondary-lightCyan text-secondary-cyan" data-tab="tareas" title="Ver tareas" role="tab" tabindex="0" aria-selected="false">Tareas</button>
+        </div>
+        <section id="tab-cursos" class="fade-in">
+            <section class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Tarjeta Curso 1 -->
+                <div class="card">
+                    <div class="flex items-center justify-between mb-2">
+                        <h2 class="text-xl font-semibold">Matemáticas</h2>
+                        <span class="text-sm font-medium text-secondary-cyan bg-secondary-lightCyan px-3 py-1 rounded-full">Activo</span>
+                    </div>
+                    <p class="text-gray-600 mb-4">Progreso del curso</p>
+                    <div class="progress-bar mb-2">
+                        <div class="progress-fill" style="width: 78%"></div>
+                    </div>
+                    <span class="text-sm text-primary-main font-bold">78% completado</span>
+                </div>
+                <!-- Tarjeta Curso 2 -->
+                <div class="card">
+                    <div class="flex items-center justify-between mb-2">
+                        <h2 class="text-xl font-semibold">Ciencias</h2>
+                        <span class="text-sm font-medium text-secondary-cyan bg-secondary-lightCyan px-3 py-1 rounded-full">Activo</span>
+                    </div>
+                    <p class="text-gray-600 mb-4">Progreso del curso</p>
+                    <div class="progress-bar mb-2">
+                        <div class="progress-fill" style="width: 52%"></div>
+                    </div>
+                    <span class="text-sm text-primary-main font-bold">52% completado</span>
+                </div>
+                <!-- Tarjeta Curso 3 -->
+                <div class="card">
+                    <div class="flex items-center justify-between mb-2">
+                        <h2 class="text-xl font-semibold">Inglés</h2>
+                        <span class="text-sm font-medium text-secondary-cyan bg-secondary-lightCyan px-3 py-1 rounded-full">Activo</span>
+                    </div>
+                    <p class="text-gray-600 mb-4">Progreso del curso</p>
+                    <div class="progress-bar mb-2">
+                        <div class="progress-fill" style="width: 91%"></div>
+                    </div>
+                    <span class="text-sm text-primary-main font-bold">91% completado</span>
+                </div>
+            </section>
+        </section>
+        <section id="tab-progreso" class="fade-in" style="display:none">
+            <div class="card">
+                <h2 class="text-2xl font-bold mb-4">Horas de Estudio (Semana Actual)</h2>
+                <canvas id="studyChart" height="120"></canvas>
+                <div class="text-sm text-gray-500 mt-2">Distribución de horas de estudio por día</div>
+            </div>
+        </section>
+        <section id="tab-calendario" class="fade-in" style="display:none">
+            <div class="card">
+                <h2 class="text-2xl font-bold mb-4">Calendario Académico</h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-center select-none">
+                        <thead>
+                            <tr class="text-primary-main">
+                                <th class="py-2">Lun</th>
+                                <th class="py-2">Mar</th>
+                                <th class="py-2">Mié</th>
+                                <th class="py-2">Jue</th>
+                                <th class="py-2">Vie</th>
+                                <th class="py-2">Sáb</th>
+                                <th class="py-2">Dom</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-gray-700">
+                            <tr>
+                                <td class="py-2"></td>
+                                <td class="py-2"></td>
+                                <td class="py-2" title="Inicio de mes">1</td>
+                                <td class="py-2" title="">2</td>
+                                <td class="py-2 bg-primary-light text-primary-main font-bold rounded-full" title="Entrega de proyecto">3</td>
+                                <td class="py-2">4</td>
+                                <td class="py-2">5</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2">6</td>
+                                <td class="py-2">7</td>
+                                <td class="py-2">8</td>
+                                <td class="py-2 bg-secondary-lightCyan text-secondary-cyan font-bold rounded-full" title="Examen de Ciencias">9</td>
+                                <td class="py-2">10</td>
+                                <td class="py-2">11</td>
+                                <td class="py-2">12</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2">13</td>
+                                <td class="py-2">14</td>
+                                <td class="py-2">15</td>
+                                <td class="py-2">16</td>
+                                <td class="py-2">17</td>
+                                <td class="py-2 bg-primary-light text-primary-main font-bold rounded-full" title="Entrega de tarea">18</td>
+                                <td class="py-2">19</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2">20</td>
+                                <td class="py-2">21</td>
+                                <td class="py-2">22</td>
+                                <td class="py-2">23</td>
+                                <td class="py-2">24</td>
+                                <td class="py-2">25</td>
+                                <td class="py-2">26</td>
+                            </tr>
+                            <tr>
+                                <td class="py-2">27</td>
+                                <td class="py-2">28</td>
+                                <td class="py-2">29</td>
+                                <td class="py-2">30</td>
+                                <td class="py-2"></td>
+                                <td class="py-2"></td>
+                                <td class="py-2"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="text-sm text-gray-500 mt-2">Días resaltados indican eventos o tareas importantes</div>
+            </div>
+        </section>
+        <section id="tab-tareas" class="fade-in" style="display:none">
+            <div class="mb-4 flex gap-2">
+                <button class="filter-btn btn-secondary" data-filter="todas">Todas</button>
+                <button class="filter-btn btn-secondary" data-filter="pendientes">Pendientes</button>
+                <button class="filter-btn btn-secondary" data-filter="completadas">Completadas</button>
+            </div>
+            <form id="add-task-form" class="flex gap-2 mb-4">
+                <input id="add-task-input" type="text" placeholder="Nueva tarea..." class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none" required>
+                <button class="btn-primary text-xs px-4 py-2" title="Agregar tarea">Agregar</button>
+            </form>
+            <ul class="divide-y divide-gray-200" id="task-list">
+                <li class="task-item flex items-center justify-between py-4 group" data-status="pendiente">
+                    <div>
+                        <span class="inline-block bg-primary-light text-primary-main text-xs font-semibold px-2 py-1 rounded-full mr-2">Pendiente</span>
+                        <span class="font-medium">Entregar tarea de Matemáticas</span>
+                        <span class="ml-2 text-xs text-gray-400">(12 Jul)</span>
+                    </div>
+                    <button class="btn-primary text-xs px-4 py-2 opacity-0 group-hover:opacity-100 transition-opacity">Marcar como hecha</button>
+                </li>
+                <li class="task-item flex items-center justify-between py-4 group" data-status="pendiente">
+                    <div>
+                        <span class="inline-block bg-secondary-lightCyan text-secondary-cyan text-xs font-semibold px-2 py-1 rounded-full mr-2">Pendiente</span>
+                        <span class="font-medium">Estudiar para examen de Ciencias</span>
+                        <span class="ml-2 text-xs text-gray-400">(14 Jul)</span>
+                    </div>
+                    <button class="btn-primary text-xs px-4 py-2 opacity-0 group-hover:opacity-100 transition-opacity">Marcar como hecha</button>
+                </li>
+                <li class="task-item flex items-center justify-between py-4 group" data-status="completada">
+                    <div>
+                        <span class="inline-block bg-green-100 text-green-700 text-xs font-semibold px-2 py-1 rounded-full mr-2">Completada</span>
+                        <span class="font-medium line-through text-gray-400">Leer capítulo de Inglés</span>
+                        <span class="ml-2 text-xs text-gray-300">(10 Jul)</span>
+                    </div>
+                    <button class="btn-secondary text-xs px-4 py-2 opacity-0 group-hover:opacity-100 transition-opacity" disabled>Hecho</button>
+                </li>
+            </ul>
+            <div id="no-tasks-message" class="hidden text-center text-gray-400 mt-8">
+                <svg class="mx-auto mb-2" width="40" height="40" fill="none" stroke="#A0AEC0" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12h8M12 8v8"/></svg>
+                <div>No hay tareas para mostrar.</div>
+            </div>
+        </section>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Loader animado
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => document.getElementById('loader').style.display = 'none', 1000);
+        });
+        // Animación de barras de progreso al cargar
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.progress-fill').forEach(bar => {
+                const width = bar.style.width;
+                bar.style.width = '0';
+                setTimeout(() => { bar.style.width = width; }, 200);
+            });
+
+            // Gráfica de horas de estudio
+            const ctx = document.getElementById('studyChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'],
+                    datasets: [{
+                        label: 'Horas de estudio',
+                        data: [2, 3, 1.5, 4, 2.5, 3.5, 1],
+                        backgroundColor: 'rgba(91, 92, 239, 0.7)',
+                        borderRadius: 8,
+                        maxBarThickness: 40
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { enabled: true }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { color: '#718096', font: { family: 'Inter' } },
+                            grid: { color: '#E2E8F0' }
+                        },
+                        x: {
+                            ticks: { color: '#718096', font: { family: 'Inter' } },
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+
+            // Tabs logic
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const tabSections = {
+                cursos: document.getElementById('tab-cursos'),
+                progreso: document.getElementById('tab-progreso'),
+                calendario: document.getElementById('tab-calendario'),
+                tareas: document.getElementById('tab-tareas')
+            };
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    Object.values(tabSections).forEach(sec => sec.style.display = 'none');
+                    tabSections[btn.dataset.tab].style.display = '';
+                    tabBtns.forEach(b => b.classList.remove('ring-2','ring-primary-main','bg-white'));
+                    btn.classList.add('ring-2','ring-primary-main','bg-white');
+                });
+            });
+            // Por defecto, activar el primer tab
+            tabBtns[0].classList.add('ring-2','ring-primary-main','bg-white');
+
+            // Filtrado de tareas
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const taskItems = document.querySelectorAll('.task-item');
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filterBtns.forEach(b => b.classList.remove('ring-2','ring-primary-main'));
+                    btn.classList.add('ring-2','ring-primary-main');
+                    const filter = btn.dataset.filter;
+                    taskItems.forEach(item => {
+                        if (filter === 'todas' || item.dataset.status === filter) {
+                            item.style.display = '';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                    const visibleTasks = Array.from(taskItems).filter(item => item.style.display !== 'none');
+                    document.getElementById('no-tasks-message').classList.toggle('hidden', visibleTasks.length > 0);
+                });
+            });
+            // Por defecto, activar 'Todas'
+            filterBtns[0].classList.add('ring-2','ring-primary-main');
+
+            // Toggle tema claro/oscuro
+            const themeToggle = document.getElementById('theme-toggle');
+            function setTheme(dark) {
+                document.body.classList.toggle('dark', dark);
+                themeToggle.textContent = dark ? '☀️' : '🌙';
+                localStorage.setItem('akasha-theme', dark ? 'dark' : 'light');
+            }
+            themeToggle.addEventListener('click', () => setTheme(!document.body.classList.contains('dark')));
+            // Inicializar tema
+            setTheme(localStorage.getItem('akasha-theme') === 'dark');
+
+            // Resaltar día actual en calendario
+            const today = new Date();
+            const day = today.getDate();
+            document.querySelectorAll('#tab-calendario td').forEach(td => {
+                if (td.textContent == day) {
+                    td.classList.add('ring-2','ring-primary-main','bg-white','font-bold');
+                }
+            });
+
+            // Simulación de agregar tarea
+            const addTaskForm = document.getElementById('add-task-form');
+            const addTaskInput = document.getElementById('add-task-input');
+            const taskList = document.getElementById('task-list');
+            addTaskForm.addEventListener('submit', e => {
+                e.preventDefault();
+                const text = addTaskInput.value.trim();
+                if (!text) return;
+                const li = document.createElement('li');
+                li.className = 'task-item flex items-center justify-between py-4 group';
+                li.dataset.status = 'pendiente';
+                li.innerHTML = `<div><span class='inline-block bg-primary-light text-primary-main text-xs font-semibold px-2 py-1 rounded-full mr-2'>Pendiente</span><span class='font-medium'>${text}</span><span class='ml-2 text-xs text-gray-400'>(Hoy)</span></div><button class='btn-primary text-xs px-4 py-2 opacity-0 group-hover:opacity-100 transition-opacity'>Marcar como hecha</button>`;
+                taskList.prepend(li);
+                addTaskInput.value = '';
+            });
+
+            // Avatar menú
+            const avatarBtn = document.getElementById('avatar-btn');
+            const avatarMenu = document.getElementById('avatar-menu');
+            avatarBtn.addEventListener('click', e => {
+                e.stopPropagation();
+                avatarMenu.classList.toggle('hidden');
+            });
+            document.addEventListener('click', () => avatarMenu.classList.add('hidden'));
+
+            // Animación de check visual al marcar tarea como hecha
+            document.getElementById('task-list').addEventListener('click', function(e) {
+                if (e.target && e.target.matches('.btn-primary') && e.target.textContent.includes('Marcar como hecha')) {
+                    const li = e.target.closest('.task-item');
+                    li.dataset.status = 'completada';
+                    li.querySelector('span').className = 'inline-block bg-green-100 text-green-700 text-xs font-semibold px-2 py-1 rounded-full mr-2';
+                    li.querySelector('span').textContent = 'Completada';
+                    const taskText = li.querySelectorAll('span')[1];
+                    taskText.classList.add('line-through','text-gray-400');
+                    e.target.className = 'btn-secondary text-xs px-4 py-2 opacity-100 transition-opacity animate-check';
+                    e.target.textContent = 'Hecho';
+                    e.target.disabled = true;
+                }
+            });
+        });
+
+        function animateFadeIn(section) {
+            section.classList.remove('visible');
+            setTimeout(() => section.classList.add('visible'), 10);
+        }
+        // Animación de aparición al cambiar de tab
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabSections = {
+            cursos: document.getElementById('tab-cursos'),
+            progreso: document.getElementById('tab-progreso'),
+            calendario: document.getElementById('tab-calendario'),
+            tareas: document.getElementById('tab-tareas')
+        };
+        Object.values(tabSections).forEach(sec => sec.classList.add('fade-in'));
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                Object.values(tabSections).forEach(sec => sec.classList.remove('visible'));
+                setTimeout(() => animateFadeIn(tabSections[btn.dataset.tab]), 50);
+            });
+        });
+        // Animación inicial
+        animateFadeIn(tabSections['cursos']);
+        // Animación al hacer scroll
+        window.addEventListener('scroll', () => {
+            Object.values(tabSections).forEach(sec => {
+                const rect = sec.getBoundingClientRect();
+                if (rect.top < window.innerHeight - 100) sec.classList.add('visible');
+            });
+        });
+
+        // Mejorar accesibilidad: navegación por teclado en tabs
+        let currentTab = 0;
+        tabBtns.forEach((btn, i) => {
+            btn.addEventListener('keydown', e => {
+                if (e.key === 'ArrowRight') {
+                    const next = (i + 1) % tabBtns.length;
+                    tabBtns[next].focus();
+                } else if (e.key === 'ArrowLeft') {
+                    const prev = (i - 1 + tabBtns.length) % tabBtns.length;
+                    tabBtns[prev].focus();
+                } else if (e.key === 'Enter' || e.key === ' ') {
+                    btn.click();
+                }
+            });
+        });
+
+        // Modo presentación
+        const presentationToggle = document.getElementById('presentation-toggle');
+        const header = document.querySelector('header');
+        const exitPresentationBtn = document.getElementById('exit-presentation');
+        let presentationMode = false;
+        presentationToggle.addEventListener('click', () => {
+            presentationMode = !presentationMode;
+            header.style.display = presentationMode ? 'none' : '';
+            document.body.style.background = presentationMode ? '#fff' : '';
+            presentationToggle.textContent = presentationMode ? '❌' : '🖥️';
+            presentationToggle.title = presentationMode ? 'Salir de modo presentación' : 'Modo presentación';
+            exitPresentationBtn.classList.toggle('hidden', !presentationMode);
+            if (presentationMode) exitPresentationBtn.focus();
+        });
+        exitPresentationBtn.addEventListener('click', () => {
+            presentationMode = false;
+            header.style.display = '';
+            document.body.style.background = '';
+            presentationToggle.textContent = '🖥️';
+            presentationToggle.title = 'Modo presentación';
+            exitPresentationBtn.classList.add('hidden');
+            presentationToggle.focus();
+        });
+    </script>
+</body>
+</html> 

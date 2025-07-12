@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO Meta Tags -->
+    <title>Akasha by 1N1 - El Futuro del Aprendizaje Inteligente en Costa Rica</title>
+    <meta name="description" content="Akasha es la plataforma educativa inteligente que organiza tu vida académica. Con IA, métricas claras y análisis personalizado para estudiantes en Costa Rica.">
+    <meta name="keywords" content="educación, Costa Rica, IA, dashboard, estudiantes, aprendizaje, 1N1, Akasha, plataforma educativa">
+    <meta name="author" content="1N1 Technologies">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://akasha.1n1.cr/">
+    <meta property="og:title" content="Akasha by 1N1 - El Futuro del Aprendizaje Inteligente">
+    <meta property="og:description" content="Tu universo de aprendizaje, ahora es inteligente. Plataforma educativa con IA para estudiantes en Costa Rica.">
+    <meta property="og:image" content="https://akasha.1n1.cr/og-image.jpg">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://akasha.1n1.cr/">
+    <meta property="twitter:title" content="Akasha by 1N1 - El Futuro del Aprendizaje Inteligente">
+    <meta property="twitter:description" content="Tu universo de aprendizaje, ahora es inteligente. Plataforma educativa con IA para estudiantes en Costa Rica.">
+    <meta property="twitter:image" content="https://akasha.1n1.cr/og-image.jpg">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    
+    <!-- Preload Critical Resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"></noscript>
+    <link rel="preload" as="image" href="Akasha.jpg">
+    
+    <!-- Optimized Tailwind CSS (Production Build) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: { main: '#5B5CEF', dark: '#4748D1', light: '#D7D8FB' },
+                        secondary: { cyan: '#6AD9C1', lightCyan: '#C9F2E9' },
+                        background: { default: '#F9FAFC', surface: '#FFFFFF' },
+                        text: { primary: '#1A202C', secondary: '#718096', disabled: '#A0AEC0', onPrimary: '#FFFFFF' },
+                        status: { success: '#4CAF50', warning: '#FFC107', error: '#F44336', info: '#2196F3', online: '#4ADE80' },
+                        border: { default: '#E2E8F0' }
+                    },
+                    fontFamily: { 'inter': ['Inter', 'sans-serif'] },
+                    borderRadius: { 'xl': '20px', 'full': '9999px' },
+                    boxShadow: { 'card': '0px 5px 15px 0px rgba(26, 32, 44, 0.06)', 'card-hover': '0px 10px 25px 0px rgba(26, 32, 44, 0.08)' }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #F9FAFC; color: #1A202C; line-height: 1.6; }
+        .gradient-text { background: linear-gradient(90deg, #5B5CEF, #6AD9C1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .hero-bg { background-color: #F9FAFC; background-image: radial-gradient(#E2E8F0 1px, transparent 1px); background-size: 20px 20px; }
+        .card {
+            background-color: #FFFFFF;
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0px 5px 15px 0px rgba(26, 32, 44, 0.06);
+            transition: transform 0.3s cubic-bezier(.4,2,.6,1), box-shadow 0.3s cubic-bezier(.4,2,.6,1);
+            border: 1px solid transparent;
+            opacity: 0;
+            transform: translateY(40px);
+        }
+        .card.revealed {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.7s cubic-bezier(.4,2,.6,1), transform 0.7s cubic-bezier(.4,2,.6,1);
+        }
+        .card:hover {
+            transform: translateY(-8px) scale(1.03);
+            box-shadow: 0px 16px 32px 0px rgba(26, 32, 44, 0.12);
+        }
+        .btn-primary { background-color: #5B5CEF; color: #FFFFFF; border-radius: 8px; padding: 10px 16px; font-weight: 600; font-size: 14px; transition: all 0.3s ease; cursor: pointer; border: none; }
+        .btn-primary:hover { background-color: #4748D1; transform: translateY(-1px); }
+        .btn-secondary { background-color: #FFFFFF; color: #1A202C; border: 1px solid #E2E8F0; border-radius: 8px; padding: 10px 16px; font-weight: 600; font-size: 14px; transition: all 0.3s ease; }
+        .btn-secondary:hover { background-color: #F9FAFC; border-color: #D1D5DB; transform: translateY(-1px); }
+        .btn-pro { background-color: #1A202C; color: #FFFFFF; border-radius: 9999px; padding: 6px 12px; font-weight: 500; font-size: 12px; transition: all 0.3s ease; }
+        .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+        .btn-primary:focus, .btn-secondary:focus, .btn-pro:focus {
+            outline: 3px solid #5B5CEF;
+            outline-offset: 3px;
+            box-shadow: 0 0 0 4px #D7D8FB;
+        }
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.5); display: flex; align-items: center; justify-content: center; z-index: 1000; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
+        .modal-overlay.is-visible { opacity: 1; visibility: visible; }
+        .modal-content { background: #FFFFFF; padding: 32px; border-radius: 20px; max-width: 500px; width: 90%; box-shadow: 0 10px 30px rgba(0,0,0,0.1); transform: scale(0.95); transition: transform 0.3s ease; }
+        .modal-overlay.is-visible .modal-content { transform: scale(1); }
+        .loading { display: inline-block; width: 20px; height: 20px; border: 3px solid rgba(255,255,255,.3); border-radius: 50%; border-top-color: #fff; animation: spin 1s ease-in-out infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .lazy-image { opacity: 0; transition: opacity 0.3s ease; }
+        .lazy-image.loaded { opacity: 1; }
+        @media (prefers-reduced-motion: reduce) { * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; } }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header -->
+    <header class="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-sm z-50 border-b border-gray-200">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <span class="text-2xl font-bold text-gray-800">Akasha</span>
+                <span class="text-xs font-semibold text-gray-500">by 1N1</span>
+            </div>
+            <nav class="hidden md:flex items-center space-x-8">
+                <a href="#features" class="text-gray-600 hover:text-gray-900">Características</a>
+                <a href="#dashboard" class="text-gray-600 hover:text-gray-900">Dashboard</a>
+                <a href="#testimonials" class="text-gray-600 hover:text-gray-900">Testimonios</a>
+            </nav>
+            <button class="btn-primary hidden md:block open-modal-btn">Solicitar Acceso Anticipado</button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <main class="pt-24 hero-bg">
+        <section class="text-center py-20 lg:py-32">
+            <div class="container mx-auto px-6">
+                <span class="text-sm font-semibold bg-blue-100 text-blue-600 rounded-full px-3 py-1">Lanzamiento Exclusivo para Costa Rica</span>
+                <h1 class="text-4xl md:text-6xl font-extrabold mt-4 max-w-4xl mx-auto leading-tight">
+                    Tu universo de aprendizaje, <span class="gradient-text">ahora es inteligente.</span>
+                </h1>
+                <p class="text-lg md:text-xl text-gray-600 mt-6 max-w-2xl mx-auto">
+                    Akasha organiza tu vida académica en un solo lugar. Con el poder de la IA, te entrega métricas, análisis y la claridad que necesitas para alcanzar tu máximo potencial.
+                </p>
+                <div class="mt-10 flex justify-center items-center space-x-4">
+                    <button class="btn-primary text-lg open-modal-btn">Únete a la lista de espera</button>
+                    <a href="#dashboard" class="btn-secondary text-lg">Ver el dashboard</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dashboard Preview Section -->
+        <section id="dashboard" class="container mx-auto px-6 pb-20 lg:pb-32">
+            <div class="relative">
+                <div class="absolute -inset-2 bg-gradient-to-r from-blue-400 to-teal-300 rounded-2xl opacity-20 blur-2xl"></div>
+                <picture>
+                    <img src="Akasha.jpg" alt="Vista previa real del dashboard Akasha mostrando tarjetas de cursos, gráficas de horas de estudio, calendario y mensajes" class="relative w-full rounded-2xl shadow-2xl border border-gray-200" loading="lazy">
+                </picture>
+            </div>
+        </section>
+        
+        <!-- Features Section -->
+        <section id="features" class="bg-white py-20 lg:py-32">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold">Todo lo que necesitas, en un solo vistazo.</h2>
+                    <p class="text-lg text-gray-600 mt-4 max-w-3xl mx-auto">Akasha no es solo un dashboard. Es tu asistente personal de estudios, diseñado para darte claridad y control.</p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="card">
+                        <div class="flex items-center justify-center h-12 w-12 rounded-full bg-blue-100 mb-4">
+                            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Métricas de Progreso Claras</h3>
+                        <p class="text-gray-600">Visualiza tu avance en cada curso con porcentajes y data intuitiva. Olvídate de las dudas, conoce exactamente dónde estás.</p>
+                    </div>
+                    <div class="card">
+                        <div class="flex items-center justify-center h-12 w-12 rounded-full bg-teal-100 mb-4">
+                            <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Análisis de Rendimiento IA</h3>
+                        <p class="text-gray-600">Nuestra IA analiza tus horas de estudio y rendimiento para darte recomendaciones personalizadas y ayudarte a optimizar tu tiempo.</p>
+                    </div>
+                    <div class="card">
+                        <div class="flex items-center justify-center h-12 w-12 rounded-full bg-purple-100 mb-4">
+                            <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Gestión de Tareas Inteligente</h3>
+                        <p class="text-gray-600">Centraliza tus tareas, fechas de entrega y logros. Akasha te ayuda a priorizar para que nunca más se te pase una entrega importante.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section id="testimonials" class="bg-gray-50 py-20 lg:py-32">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold">Creado para estudiantes, validado por educadores.</h2>
+                </div>
+                <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                    <div class="card p-8">
+                        <p class="text-gray-700 text-lg mb-4">"Akasha es la herramienta que siempre quise como estudiante. La claridad que me da sobre mi propio progreso es increíble. Finalmente siento que tengo el control total de mis estudios."</p>
+                        <div class="flex items-center">
+                            <img class="w-12 h-12 rounded-full mr-4" src="https://ui-avatars.com/api/?name=Brenda+C.&background=5B5CEF&color=fff" alt="Brenda C., estudiante" loading="lazy">
+                            <div>
+                                <p class="font-semibold">Brenda C.</p>
+                                <p class="text-gray-600">Estudiante de Ingeniería, UCR</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card p-8">
+                        <p class="text-gray-700 text-lg mb-4">"Como educador, veo un potencial transformador en Akasha. Permite a los alumnos desarrollar autonomía y una comprensión profunda de sus hábitos de estudio. Es el futuro de la gestión académica."</p>
+                        <div class="flex items-center">
+                            <img class="w-12 h-12 rounded-full mr-4" src="https://ui-avatars.com/api/?name=Manuel+Rojas&background=6AD9C1&color=fff" alt="Prof. Manuel Rojas, educador" loading="lazy">
+                            <div>
+                                <p class="font-semibold">Prof. Manuel Rojas</p>
+                                <p class="text-gray-600">Director de Innovación Académica</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Final CTA -->
+        <section class="py-20 lg:py-32">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold">¿Listo para transformar tu aprendizaje?</h2>
+                <p class="text-lg text-gray-600 mt-4 max-w-2xl mx-auto">Sé de los primeros en Costa Rica en experimentar el poder de Akasha. El acceso es limitado.</p>
+                <div class="mt-8">
+                    <button class="btn-primary text-xl open-modal-btn">Solicitar mi acceso ahora</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200">
+        <div class="container mx-auto px-6 py-8 text-center text-gray-600">
+            <p>&copy; 2025 1N1 Technologies. Todos los derechos reservados.</p>
+            <p class="text-sm mt-2">Diseñado con <span class="text-red-500">&hearts;</span> para el futuro de la educación en Costa Rica.</p>
+        </div>
+    </footer>
+
+    <!-- Modal de Captura de Leads -->
+    <div id="lead-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="lead-modal-title">
+        <div class="modal-content relative">
+            <button id="close-modal-btn" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600" aria-label="Cerrar modal">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <h3 id="lead-modal-title" class="text-2xl font-bold mb-2">Acceso Anticipado a Akasha</h3>
+            <p class="text-gray-600 mb-6">Introduce tu correo electrónico para ser de los primeros en saber cuándo lanzamos.</p>
+            <form id="lead-form" action="https://formspree.io/f/xyzjrpzw" method="POST">
+                <input id="email-input" name="email" type="email" placeholder="tu.correo@email.com" required class="w-full px-4 py-3 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <button type="submit" class="btn-primary w-full text-lg" aria-label="Enviar solicitud de acceso anticipado">Enviar Solicitud</button>
+                <p class="text-xs text-gray-500 mt-2">Nunca compartiremos tu correo. Solo lo usaremos para avisarte del lanzamiento.</p>
+            </form>
+            <div id="success-message" class="hidden mt-4 text-center p-4 bg-green-100 text-green-700 rounded-lg" aria-live="polite">
+                <p class="font-semibold">¡Gracias!</p>
+                <p>Hemos recibido tu solicitud. Te contactaremos pronto.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="bg-white py-20 lg:py-32">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold">Preguntas Frecuentes</h2>
+                <p class="text-lg text-gray-600 mt-4 max-w-3xl mx-auto">Resuelve tus dudas sobre Akasha y cómo puede ayudarte en tu vida académica.</p>
+            </div>
+            <div class="max-w-3xl mx-auto">
+                <div class="card mb-6">
+                    <h3 class="text-xl font-semibold mb-2">¿Qué es Akasha?</h3>
+                    <p class="text-gray-600">Akasha es una plataforma educativa inteligente que centraliza y visualiza el progreso académico de los estudiantes, ayudándolos a organizar su aprendizaje y mejorar su rendimiento.</p>
+                </div>
+                <div class="card mb-6">
+                    <h3 class="text-xl font-semibold mb-2">¿A quién está dirigido Akasha?</h3>
+                    <p class="text-gray-600">Está dirigido a estudiantes de escuelas en Costa Rica que buscan una herramienta moderna y eficiente para gestionar su vida académica.</p>
+                </div>
+                <div class="card mb-6">
+                    <h3 class="text-xl font-semibold mb-2">¿Cómo puedo acceder a Akasha?</h3>
+                    <p class="text-gray-600">Actualmente, puedes solicitar acceso anticipado a través del formulario en esta página. Pronto estará disponible para más estudiantes.</p>
+                </div>
+                <div class="card">
+                    <h3 class="text-xl font-semibold mb-2">¿Qué tecnologías utiliza Akasha?</h3>
+                    <p class="text-gray-600">Akasha utiliza inteligencia artificial y tecnologías web modernas para ofrecer una experiencia intuitiva, segura y eficiente.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Demo Interactive Section -->
+    <section id="demo" class="bg-gray-50 py-20 lg:py-32">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold">Experimenta Akasha</h2>
+                <p class="text-lg text-gray-600 mt-4 max-w-3xl mx-auto">Interactúa con nuestro demo y descubre cómo Akasha puede transformar tu experiencia de aprendizaje.</p>
+            </div>
+            <div class="max-w-4xl mx-auto">
+                <div class="card p-8">
+                    <div class="grid md:grid-cols-2 gap-8 items-center">
+                        <div>
+                            <h3 class="text-2xl font-bold mb-4">Dashboard Interactivo</h3>
+                            <p class="text-gray-600 mb-6">Explora las funcionalidades principales de Akasha con nuestro demo interactivo. Descubre cómo se ve y funciona la plataforma.</p>
+                            <button class="btn-primary" onclick="window.open('demo.html', '_blank')" aria-label="Abrir demo interactivo en nueva pestaña">Abrir Demo</button>
+                        </div>
+                        <div class="relative">
+                            <div class="absolute -inset-2 bg-gradient-to-r from-primary-main to-secondary-cyan rounded-2xl opacity-20 blur-2xl"></div>
+                            <img src="Akasha.jpg" 
+                                 alt="Vista previa real del dashboard Akasha mostrando tarjetas de cursos, gráficas de horas de estudio, calendario y mensajes" 
+                                 class="relative w-full rounded-2xl shadow-2xl border border-gray-200 lazy-image"
+                                 loading="lazy">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const modal = document.getElementById('lead-modal');
+            const openModalButtons = document.querySelectorAll('.open-modal-btn');
+            const closeModalButton = document.getElementById('close-modal-btn');
+            const leadForm = document.getElementById('lead-form');
+            const emailInput = document.getElementById('email-input');
+            const successMessage = document.getElementById('success-message');
+
+            // Función para abrir el modal
+            const openModal = () => {
+                modal.classList.add('is-visible');
+            };
+
+            // Función para cerrar el modal
+            const closeModal = () => {
+                modal.classList.remove('is-visible');
+                leadForm.style.display = 'block';
+                successMessage.classList.add('hidden');
+                emailInput.value = '';
+            };
+
+            openModalButtons.forEach(button => {
+                button.addEventListener('click', openModal);
+            });
+
+            closeModalButton.addEventListener('click', closeModal);
+            modal.addEventListener('click', (event) => {
+                if (event.target === modal) {
+                    closeModal();
+                }
+            });
+
+            // Manejar el envío del formulario con AJAX para mostrar mensaje de éxito sin recargar
+            leadForm.addEventListener('submit', async (event) => {
+                event.preventDefault();
+                const formData = new FormData(leadForm);
+                try {
+                    const response = await fetch(leadForm.action, {
+                        method: 'POST',
+                        body: formData,
+                        headers: { 'Accept': 'application/json' }
+                    });
+                    if (response.ok) {
+                        leadForm.style.display = 'none';
+                        successMessage.classList.remove('hidden');
+                        setTimeout(closeModal, 4000);
+                    } else {
+                        alert('Hubo un error al enviar tu solicitud. Intenta de nuevo.');
+                    }
+                } catch (error) {
+                    alert('Hubo un error al enviar tu solicitud. Intenta de nuevo.');
+                }
+            });
+        });
+        // Lazy loading for images
+        document.addEventListener('DOMContentLoaded', function() {
+            const images = document.querySelectorAll('.lazy-image');
+            images.forEach(img => {
+                img.onload = () => img.classList.add('loaded');
+                if (img.complete) img.classList.add('loaded');
+            });
+        });
+        // Animación de entrada para el hero y scroll reveal para las cards
+        window.addEventListener('DOMContentLoaded', () => {
+            // Animación de entrada para el hero
+            const hero = document.querySelector('main > section');
+            if (hero) {
+                hero.style.opacity = 0;
+                hero.style.transform = 'translateY(40px)';
+                setTimeout(() => {
+                    hero.style.transition = 'opacity 0.8s cubic-bezier(.4,2,.6,1), transform 0.8s cubic-bezier(.4,2,.6,1)';
+                    hero.style.opacity = 1;
+                    hero.style.transform = 'translateY(0)';
+                }, 200);
+            }
+            // Scroll reveal para las cards
+            const revealCards = () => {
+                const cards = document.querySelectorAll('.card');
+                const trigger = window.innerHeight * 0.92;
+                cards.forEach(card => {
+                    const rect = card.getBoundingClientRect();
+                    if (rect.top < trigger) {
+                        card.classList.add('revealed');
+                    }
+                });
+            };
+            window.addEventListener('scroll', revealCards);
+            revealCards();
+        });
+        // Mejorar accesibilidad: cerrar modal con ESC
+        window.addEventListener('keydown', (e) => {
+            const modal = document.getElementById('lead-modal');
+            if (modal && modal.classList.contains('is-visible') && e.key === 'Escape') {
+                modal.classList.remove('is-visible');
+                const leadForm = document.getElementById('lead-form');
+                const successMessage = document.getElementById('success-message');
+                if (leadForm) leadForm.style.display = 'block';
+                if (successMessage) successMessage.classList.add('hidden');
+                const emailInput = document.getElementById('email-input');
+                if (emailInput) emailInput.value = '';
+            }
+        });
+    </script>
+
+    <!-- JSON-LD de organización para SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "1N1 Technologies",
+      "url": "https://akasha.1n1.cr/",
+      "logo": "https://akasha.1n1.cr/logo.png",
+      "contactPoint": [{
+        "@type": "ContactPoint",
+        "email": "info@1n1.cr",
+        "contactType": "customer support",
+        "areaServed": "CR",
+        "availableLanguage": ["Spanish", "English"]
+      }],
+      "sameAs": [
+        "https://www.linkedin.com/company/1n1-technologies/"
+      ]
+    }
+    </script>
+
+</body>
+</html>
